@@ -65,7 +65,6 @@ public class CaptureActivity extends Activity implements Callback {
     private boolean bLight;
 
     private IDPhoto idPhoto;
-    public int MY_SCAN_REQUEST_CODE_ID = 102; //身份证识别请求码
     public static final int PHOTO_ID = 0x1025;
     private boolean bPhotoReco;
 
@@ -77,8 +76,6 @@ public class CaptureActivity extends Activity implements Callback {
     private int lastCardsIndex = 0;
 
     private int compareCount = 0;
-    //current time recognition result
-    private EXIDCardResult cardRest = null;
 
     private static int uniqueOMatic = 10;
     private static final int REQUEST_DATA_ENTRY = uniqueOMatic++;
@@ -101,7 +98,7 @@ public class CaptureActivity extends Activity implements Callback {
                 // 竖屏
                 // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 // 一个自定义的布局，作为显示的内容
-                int popupId = ViewUtil.getResourseIdByName(getApplicationContext().getPackageName(), "layout", "popupview");
+                int popupId = ViewUtil.getResourseIdByName(getApplicationContext().getPackageName(), "layout", "layout_alert");
                 View contentView = CaptureActivity.this.getLayoutInflater().inflate(popupId, null);
                 // 设置按钮的点击事件
                 int btnId = ViewUtil.getResourseIdByName(getApplicationContext().getPackageName(), "id", "okButton");
@@ -388,11 +385,6 @@ public class CaptureActivity extends Activity implements Callback {
 
         }
         return false;
-    }
-
-
-    public void SetRecoResult(EXIDCardResult result) {
-        cardRest = result;
     }
 
     //check is equal()

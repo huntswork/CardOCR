@@ -67,9 +67,7 @@ final class PictureCallback implements Camera.PictureCallback {
 			if (ret > 0) {
 				EXIDCardResult idcard = EXIDCardResult.decode(ocrengine.bResultBuf, ret);
 				if(idcard != null){
-					activity.SetRecoResult(idcard);
 					idcard.SetViewType("Preview");
-//					Message message = Message.obtain(activity.getHandler(),	R.id.decode_succeeded, idcard);
 					Message message = Message.obtain(activity.getHandler(),	ViewUtil.getResourseIdByName(activity.getApplicationContext().getPackageName(), "id", "decode_succeeded"), idcard);
 					message.sendToTarget();
 				}
@@ -79,7 +77,6 @@ final class PictureCallback implements Camera.PictureCallback {
 		CameraManager.get().startPreview();
 	}
 	
-	//convert rgb bitmpa to gray bitmap data
 	static private void convert2Gray(Bitmap bmp, byte []data, int width, int height)
 	{
 		int[] pixels = new int[width * height]; // 通过位图的大小创建像素点数组

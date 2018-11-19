@@ -99,7 +99,6 @@ private int gcount;
 			//if we have the text to show
 			//检测，确保无误。
 			if ( idcard != null  && activity.CheckIsEqual(idcard) ) {
-				activity.SetRecoResult(idcard);
 				idcard.SetViewType("Preview");
 				idcard.SetColorType(CardColorJudge(data, width, height));
 				
