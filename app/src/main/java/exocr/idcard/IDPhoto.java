@@ -9,15 +9,17 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
+import com.kalu.ocr.CaptureActivity;
+
 import java.io.FileNotFoundException;
 
-import exocr.exocrengine.EXIDCardResult;
+import exocr.exocrengine.EXOCRModel;
 import exocr.exocrengine.EXOCREngine;
 
 public class IDPhoto {
     private static final String TAG = IDPhoto.class.getSimpleName();
     private CaptureActivity mActivity;
-    private EXIDCardResult mCardInfo;
+    private EXOCRModel mCardInfo;
     static Bitmap markedCardImage = null;
     private boolean bSucceed;
 
@@ -51,14 +53,14 @@ public class IDPhoto {
 
         ret = rets[0];
         if (ret > 0) {
-            mCardInfo = EXIDCardResult.decode(result, ret);
+            mCardInfo = EXOCRModel.decode(result, ret);
             mCardInfo.SetBitmap(context, cardim);
             //保存各个条目的矩形框
             mCardInfo.setRects(rects);
             bSucceed = true;
         } else {
             bSucceed = false;
-            mCardInfo = new EXIDCardResult();
+            mCardInfo = new EXOCRModel();
             if (markedCardImage != null && !markedCardImage.isRecycled()) {
                 markedCardImage.recycle();
             }
@@ -109,7 +111,7 @@ public class IDPhoto {
         }
     }
 
-    public EXIDCardResult getRecoResult() {
+    public EXOCRModel getRecoResult() {
         return mCardInfo;
     }
 }

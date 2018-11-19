@@ -23,22 +23,25 @@
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.kalu.ocr.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <activity
-            android:name="exocr.idcard.CaptureActivity"
+            android:name=".IdcardActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".CaptureActivity"
             android:configChanges="orientation"
             android:screenOrientation="landscape" />
-
     </application>
 
 </manifest>

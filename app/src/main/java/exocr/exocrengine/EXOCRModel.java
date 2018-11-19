@@ -11,7 +11,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public final class EXIDCardResult implements Parcelable {
+/**
+ * description: 数据字典
+ * create by kalu on 2018/11/19 10:04
+ */
+public final class EXOCRModel implements Parcelable {
     //是否显示头像		SHOW_RESULT_ACTIVITY置true有效
     public static boolean SHOW_FACEIMG_ID = false;
     //是否显示姓名	SHOW_RESULT_ACTIVITY置true有效
@@ -62,13 +66,13 @@ public final class EXIDCardResult implements Parcelable {
     public Rect rtOffice;
     public Rect rtValid;
 
-    public EXIDCardResult() {
+    public EXOCRModel() {
         type = 0;
         imgtype = "Preview";
     }
 
     // parcelable
-    private EXIDCardResult(Parcel src) {
+    private EXOCRModel(Parcel src) {
         type = src.readInt();
         cardnum = src.readString();
         birth = src.readString();
@@ -88,12 +92,12 @@ public final class EXIDCardResult implements Parcelable {
      * decode from stream
      * return the len of decoded data int the buf
      */
-    public static EXIDCardResult decode(byte[] bResultBuf, int reslen) {
+    public static EXOCRModel decode(byte[] bResultBuf, int reslen) {
         byte code;
         int i, j, rdcount;
         String content = null;
 
-        EXIDCardResult idcard = new EXIDCardResult();
+        EXOCRModel idcard = new EXOCRModel();
 
         ////////////////////////////////////////////////////////////
         //type
@@ -261,16 +265,16 @@ public final class EXIDCardResult implements Parcelable {
         return text;
     }
 
-    public static final Creator<EXIDCardResult> CREATOR = new Creator<EXIDCardResult>() {
+    public static final Creator<EXOCRModel> CREATOR = new Creator<EXOCRModel>() {
 
         @Override
-        public EXIDCardResult createFromParcel(Parcel source) {
-            return new EXIDCardResult(source);
+        public EXOCRModel createFromParcel(Parcel source) {
+            return new EXOCRModel(source);
         }
 
         @Override
-        public EXIDCardResult[] newArray(int size) {
-            return new EXIDCardResult[size];
+        public EXOCRModel[] newArray(int size) {
+            return new EXOCRModel[size];
         }
     };
 

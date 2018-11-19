@@ -1,67 +1,53 @@
-package exocr.idcard;
+package com.kalu.ocr;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.hardware.Camera.ShutterCallback;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
-
-import com.kalu.ocr.R;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
-import exocr.exocrengine.EXIDCardResult;
+import exocr.exocrengine.EXOCRModel;
+import exocr.idcard.CameraManager;
+import exocr.idcard.CaptureHandler;
+import exocr.idcard.IDPhoto;
+import exocr.idcard.ViewUtil;
 import exocr.view.CaptureView;
 
-public class CaptureActivity extends Activity implements Callback {
+public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
 
     public static final String INTNET_FRONT = "ShouldFront";
 
     public static final String EXTRA_SCAN_RESULT = "exocr.idcard.scanResult";
     private static final String TAG = CaptureActivity.class.getSimpleName();
-    private CaptureActivityHandler handler;
+    private CaptureHandler handler;
     private boolean hasSurface;
-    private TextView txtResult;
-    private ImageView imgView;
-    private InactivityTimer inactivityTimer;
-    private MediaPlayer mediaPlayer;
-    private boolean playBeep;
-    private static final float BEEP_VOLUME = 0.10f;
-    private boolean vibrate;
-    private int time;
     private boolean bLight;
 
     private IDPhoto idPhoto;
@@ -71,7 +57,7 @@ public class CaptureActivity extends Activity implements Callback {
 
     private final int lastCardsLength = 5;
     //save last  time recognize result
-    private EXIDCardResult[] lastCards = new EXIDCardResult[lastCardsLength];
+    private EXOCRModel[] lastCards = new EXOCRModel[lastCardsLength];
     //last index 0 ~ lastCardsLength -1
     private int lastCardsIndex = 0;
 
@@ -166,13 +152,13 @@ public class CaptureActivity extends Activity implements Callback {
         //double-check
         //system version NOT less than 4.2.x, number of cpus NOT less than 4
         if (VERSION.SDK_INT >= 17 && getNumCores() >= 4) {
-            EXIDCardResult.DOUBLE_CHECK = true;
+            EXOCRModel.DOUBLE_CHECK = true;
             Log.d(TAG, "open double-check");
             //disable double-check after 10s
             TimerTask task = new TimerTask() {
                 public void run() {
                     // execute the task
-                    EXIDCardResult.DOUBLE_CHECK = false;
+                    EXOCRModel.DOUBLE_CHECK = false;
                     Log.d(TAG, "close double-check");
                 }
             };
@@ -181,11 +167,7 @@ public class CaptureActivity extends Activity implements Callback {
         }
 
         if (bCamera) {
-            txtResult = (TextView) findViewById(ViewUtil.getResourseIdByName(getApplicationContext().getPackageName(), "id", "txtResult"));
-            imgView = (ImageView) findViewById(ViewUtil.getResourseIdByName(getApplicationContext().getPackageName(), "id", "FaceImg"));
             hasSurface = false;
-            inactivityTimer = new InactivityTimer(this);
-            time = 0;
             bPhotoReco = false;
             bshouleFront = getIntent().getBooleanExtra(INTNET_FRONT, true);
             Log.d(TAG, "bshouleFront:" + bshouleFront);
@@ -244,14 +226,6 @@ public class CaptureActivity extends Activity implements Callback {
                 surfaceHolder.addCallback(this);
                 surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
             }
-
-            playBeep = true;
-            AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
-            if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-                playBeep = false;
-            }
-            initBeepSound();
-            vibrate = true;
         }
     }
 
@@ -267,34 +241,13 @@ public class CaptureActivity extends Activity implements Callback {
 
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
-            CameraManager.get().openDriver(surfaceHolder);
-        } catch (IOException ioe) {
-            return;
-        } catch (RuntimeException e) {
+            CameraManager.get().openCamera(surfaceHolder);
+        } catch (Exception ioe) {
             return;
         }
         if (handler == null) {
-            handler = new CaptureActivityHandler(this);
+            handler = new CaptureHandler(this);
         }
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        if (!hasSurface && bPhotoReco == false) {
-            hasSurface = true;
-            initCamera(holder);
-        }
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        hasSurface = false;
-
     }
 
     public Handler getHandler() {
@@ -310,51 +263,6 @@ public class CaptureActivity extends Activity implements Callback {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-    private void initBeepSound() {
-        if (playBeep && mediaPlayer == null) {
-            // The volume on STREAM_SYSTEM is not adjustable, and users found it
-            // too loud,
-            // so we now play on the music stream.
-            setVolumeControlStream(AudioManager.STREAM_MUSIC);
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setOnCompletionListener(beepListener);
-
-            int beepId = ViewUtil.getResourseIdByName(getApplicationContext().getPackageName(), "raw", "beep");
-            AssetFileDescriptor file = getResources().openRawResourceFd(beepId);
-//			AssetFileDescriptor file = getResources().openRawResourceFd(R.raw.beep);
-            try {
-                mediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(), file.getLength());
-                file.close();
-                mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
-                mediaPlayer.prepare();
-            } catch (IOException e) {
-                mediaPlayer = null;
-            }
-        }
-    }
-
-    private static final long VIBRATE_DURATION = 200L;
-
-    private void playBeepSoundAndVibrate() {
-        if (playBeep && mediaPlayer != null) {
-            mediaPlayer.start();
-        }
-        if (vibrate) {
-            Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-            vibrator.vibrate(VIBRATE_DURATION);
-        }
-    }
-
-    /**
-     * When the beep has finished playing, rewind to queue up another one.
-     */
-    private final OnCompletionListener beepListener = new OnCompletionListener() {
-        public void onCompletion(MediaPlayer mediaPlayer) {
-            mediaPlayer.seekTo(0);
-        }
-    };
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -388,8 +296,8 @@ public class CaptureActivity extends Activity implements Callback {
     }
 
     //check is equal()
-    public boolean CheckIsEqual(EXIDCardResult cardcur) {
-        if (!(EXIDCardResult.DOUBLE_CHECK)) {
+    public boolean CheckIsEqual(EXOCRModel cardcur) {
+        if (!(EXOCRModel.DOUBLE_CHECK)) {
             Log.d(TAG, "disable double-check");
             return true;
         } else {
@@ -398,7 +306,7 @@ public class CaptureActivity extends Activity implements Callback {
         if (compareCount++ > 50) {
             return true;
         }
-        EXIDCardResult cardlast;
+        EXOCRModel cardlast;
         for (int i = 0; i < lastCardsLength; i++) {
             if (lastCards[i] != null) {
                 cardlast = lastCards[i];
@@ -426,7 +334,7 @@ public class CaptureActivity extends Activity implements Callback {
             lastCardsIndex = 0;
         }
         if (lastCards[lastCardsIndex] == null) {
-            lastCards[lastCardsIndex] = new EXIDCardResult();
+            lastCards[lastCardsIndex] = new EXOCRModel();
         }
         lastCards[lastCardsIndex].type = cardcur.type;
         if (cardcur.type == 1) {
@@ -504,14 +412,6 @@ public class CaptureActivity extends Activity implements Callback {
             surfaceHolder.addCallback(this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
-
-        playBeep = true;
-        AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
-        if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-            playBeep = false;
-        }
-        initBeepSound();
-        vibrate = true;
     }
 
     private int getNumCores() {
@@ -546,7 +446,26 @@ public class CaptureActivity extends Activity implements Callback {
 
     /**********************************************************************************************/
 
-    public void handleDecode(EXIDCardResult result) {
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        if (!hasSurface && bPhotoReco == false) {
+            hasSurface = true;
+            initCamera(holder);
+        }
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        hasSurface = false;
+    }
+
+    /**********************************************************************************************/
+
+    public void handleDecode(EXOCRModel result) {
 
         if (null == result)
             return;

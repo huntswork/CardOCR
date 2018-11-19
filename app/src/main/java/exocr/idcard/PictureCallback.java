@@ -1,26 +1,10 @@
-/*
- * Copyright (C) 2010 ZXing authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package exocr.idcard;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PipedReader;
 import java.text.SimpleDateFormat;
 
 import exocr.exocrengine.*;
@@ -28,13 +12,11 @@ import exocr.exocrengine.*;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.Message;
-import android.os.StatFs;
-import android.util.Log;
+
+import com.kalu.ocr.CaptureActivity;
 
 final class PictureCallback implements Camera.PictureCallback {
 
@@ -65,10 +47,10 @@ final class PictureCallback implements Camera.PictureCallback {
 			ret = EXOCREngine.nativeRecoIDCardBitmap(bitmap, ocrengine.bResultBuf, ocrengine.bResultBuf.length);
 			
 			if (ret > 0) {
-				EXIDCardResult idcard = EXIDCardResult.decode(ocrengine.bResultBuf, ret);
+				EXOCRModel idcard = EXOCRModel.decode(ocrengine.bResultBuf, ret);
 				if(idcard != null){
 					idcard.SetViewType("Preview");
-					Message message = Message.obtain(activity.getHandler(),	ViewUtil.getResourseIdByName(activity.getApplicationContext().getPackageName(), "id", "decode_succeeded"), idcard);
+					Message message = Message.obtain(activity.getHandler(), PreviewCallback.PARSE_SUCC, idcard);
 					message.sendToTarget();
 				}
 			}
