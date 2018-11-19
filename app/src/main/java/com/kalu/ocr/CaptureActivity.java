@@ -55,12 +55,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private boolean bPhotoReco;
 
 
-    private final int lastCardsLength = 5;
-    //save last  time recognize result
-    private EXOCRModel[] lastCards = new EXOCRModel[lastCardsLength];
-    //last index 0 ~ lastCardsLength -1
-    private int lastCardsIndex = 0;
-
     private int compareCount = 0;
 
     private static int uniqueOMatic = 10;
@@ -105,8 +99,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                 // popupWindow.setBackgroundDrawable(new BitmapDrawable());
                 // 设置好参数之后再show
                 int IDpreview_viewId = ViewUtil.getResourseIdByName(getApplicationContext().getPackageName(), "id", "IDpreview_view");
-                popupWindow.showAtLocation(CaptureActivity.this.findViewById(IDpreview_viewId), Gravity.CENTER, 0,
-                        0);
+                popupWindow.showAtLocation(CaptureActivity.this.findViewById(IDpreview_viewId), Gravity.CENTER, 0, 0);
             }
         }
     };
@@ -124,9 +117,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         super.finish();
     }
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -296,60 +286,60 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     //check is equal()
-    public boolean CheckIsEqual(EXOCRModel cardcur) {
-        if (!(EXOCRModel.DOUBLE_CHECK)) {
-            Log.d(TAG, "disable double-check");
-            return true;
-        } else {
-            Log.d(TAG, "enable double-check");
-        }
-        if (compareCount++ > 50) {
-            return true;
-        }
-        EXOCRModel cardlast;
-        for (int i = 0; i < lastCardsLength; i++) {
-            if (lastCards[i] != null) {
-                cardlast = lastCards[i];
-                if (cardlast.type == 1 && cardcur.type == 1) {
-                    if (cardlast.name.equals(cardcur.name) &&
-                            cardlast.sex.equals(cardcur.sex) &&
-                            cardlast.nation.equals(cardcur.nation) &&
-                            cardlast.cardnum.equals(cardcur.cardnum) &&
-                            cardlast.address.equals(cardcur.address)) {
-                        //Log.e("比对成功",  String.valueOf(i));
-                        return true;
-                    }
-                } else if (cardlast.type == 2 && cardcur.type == 2) {
-                    if (cardlast.validdate.equals(cardcur.validdate) &&
-                            cardlast.office.equals(cardcur.office)) {
-                        //Log.e("比对成功",  String.valueOf(i));
-                        return true;
-                    }
-                }
-            }
-        }
-
-        lastCardsIndex++;
-        if (lastCardsIndex + 1 > lastCardsLength) {
-            lastCardsIndex = 0;
-        }
-        if (lastCards[lastCardsIndex] == null) {
-            lastCards[lastCardsIndex] = new EXOCRModel();
-        }
-        lastCards[lastCardsIndex].type = cardcur.type;
-        if (cardcur.type == 1) {
-            lastCards[lastCardsIndex].sex = cardcur.sex;
-            lastCards[lastCardsIndex].nation = cardcur.nation;
-            lastCards[lastCardsIndex].cardnum = cardcur.cardnum;
-            lastCards[lastCardsIndex].address = cardcur.address;
-            lastCards[lastCardsIndex].name = cardcur.name;
-        } else if (cardcur.type == 2) {
-            lastCards[lastCardsIndex].validdate = cardcur.validdate;
-            lastCards[lastCardsIndex].office = cardcur.office;
-        }
-        //Log.e("比对失败",  String.valueOf(lastCardsIndex));
-        return false;
-    }
+//    public boolean CheckIsEqual(EXOCRModel cardcur) {
+//        if (!(EXOCRModel.DOUBLE_CHECK)) {
+//            Log.d(TAG, "disable double-check");
+//            return true;
+//        } else {
+//            Log.d(TAG, "enable double-check");
+//        }
+//        if (compareCount++ > 50) {
+//            return true;
+//        }
+//        EXOCRModel cardlast;
+//        for (int i = 0; i < lastCardsLength; i++) {
+//            if (lastCards[i] != null) {
+//                cardlast = lastCards[i];
+//                if (cardlast.type == 1 && cardcur.type == 1) {
+//                    if (cardlast.name.equals(cardcur.name) &&
+//                            cardlast.sex.equals(cardcur.sex) &&
+//                            cardlast.nation.equals(cardcur.nation) &&
+//                            cardlast.cardnum.equals(cardcur.cardnum) &&
+//                            cardlast.address.equals(cardcur.address)) {
+//                        //Log.e("比对成功",  String.valueOf(i));
+//                        return true;
+//                    }
+//                } else if (cardlast.type == 2 && cardcur.type == 2) {
+//                    if (cardlast.validdate.equals(cardcur.validdate) &&
+//                            cardlast.office.equals(cardcur.office)) {
+//                        //Log.e("比对成功",  String.valueOf(i));
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        lastCardsIndex++;
+//        if (lastCardsIndex + 1 > lastCardsLength) {
+//            lastCardsIndex = 0;
+//        }
+//        if (lastCards[lastCardsIndex] == null) {
+//            lastCards[lastCardsIndex] = new EXOCRModel();
+//        }
+//        lastCards[lastCardsIndex].type = cardcur.type;
+//        if (cardcur.type == 1) {
+//            lastCards[lastCardsIndex].sex = cardcur.sex;
+//            lastCards[lastCardsIndex].nation = cardcur.nation;
+//            lastCards[lastCardsIndex].cardnum = cardcur.cardnum;
+//            lastCards[lastCardsIndex].address = cardcur.address;
+//            lastCards[lastCardsIndex].name = cardcur.name;
+//        } else if (cardcur.type == 2) {
+//            lastCards[lastCardsIndex].validdate = cardcur.validdate;
+//            lastCards[lastCardsIndex].office = cardcur.office;
+//        }
+//        //Log.e("比对失败",  String.valueOf(lastCardsIndex));
+//        return false;
+//    }
 
     public ShutterCallback getShutterCallback() {
         return shutterCallback;

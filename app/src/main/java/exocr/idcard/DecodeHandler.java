@@ -66,7 +66,7 @@ final class DecodeHandler extends Handler {
             EXOCRModel idcard = EXOCRModel.decode(ocrengine.bResultBuf, ret);
             //if we have the text to show
             //检测，确保无误。
-            if (idcard != null && activity.CheckIsEqual(idcard)) {
+            if (idcard != null) {
                 idcard.SetViewType("Preview");
                 idcard.SetColorType(CardColorJudge(data, width, height));
 
