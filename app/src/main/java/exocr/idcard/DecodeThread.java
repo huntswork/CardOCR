@@ -1,41 +1,43 @@
 package exocr.idcard;
 
-import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.kalu.ocr.CaptureActivity;
 
 import java.util.concurrent.CountDownLatch;
 
+
+/**
+ * description: 解码
+ * create by kalu on 2018/11/20 9:41
+ */
 final class DecodeThread extends Thread {
 
-  //public static final String BARCODE_BITMAP = "barcode_bitmap";
+    private final CaptureActivity activity;
+    private DecodeHandler handler;
 
-  private final CaptureActivity activity;
-  private Handler handler;
-  private final CountDownLatch handlerInitLatch;
+    // 并发
+    private final CountDownLatch countDown = new CountDownLatch(1);
 
-  DecodeThread(CaptureActivity activity) {
-
-    this.activity = activity;
-    handlerInitLatch = new CountDownLatch(1);
-  }
-
-  Handler getHandler() {
-    try {
-      handlerInitLatch.await();
-    } catch (InterruptedException ie) {
-      // continue?
+    DecodeThread(CaptureActivity activity) {
+        this.activity = activity;
     }
-    return handler;
-  }
 
-  @Override
-  public void run() {
-    Looper.prepare();
-    handler = new DecodeHandler(activity);
-    handlerInitLatch.countDown();
-    Looper.loop();
-  }
+    DecodeHandler getHandler() {
+        try {
+            countDown.await();
+        } catch (Exception e) {
+            Log.e("kalu", "getHandler ==> " + e.getMessage(), e);
+        }
+        return handler;
+    }
 
+    @Override
+    public void run() {
+        Looper.prepare();
+        handler = new DecodeHandler(activity);
+        countDown.countDown();
+        Looper.loop();
+    }
 }

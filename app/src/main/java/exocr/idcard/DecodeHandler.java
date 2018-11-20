@@ -22,6 +22,10 @@ import java.text.SimpleDateFormat;
 import exocr.exocrengine.EXOCREngine;
 import exocr.exocrengine.EXOCRModel;
 
+/**
+ * description: 解码
+ * create by kalu on 2018/11/20 9:41
+ */
 final class DecodeHandler extends Handler {
 
     private static final String TAG = DecodeHandler.class.getSimpleName();
@@ -35,7 +39,6 @@ final class DecodeHandler extends Handler {
         gcount = 0;
         quit_id = ViewUtil.getResourseIdByName(activity.getApplicationContext().getPackageName(), "id", "quit");
     }
-
 
     @Override
     public void handleMessage(Message message) {
@@ -51,19 +54,20 @@ final class DecodeHandler extends Handler {
         int[] rects = new int[32];
         // arg
         int ret = 0;
-        EXOCREngine ocrengine = new EXOCREngine();
         //savetofile(data, width, height);
         //savetoJPEG(data, width, height);
 
+        final byte[] obtain = EXOCREngine.obtain();
+
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        ocrengine.timestart = System.currentTimeMillis();
-        ret = EXOCREngine.nativeRecoIDCardRawdat(data, width, height, width, 1, ocrengine.bResultBuf, ocrengine.bResultBuf.length);
-        ocrengine.timeend = System.currentTimeMillis();
+        EXOCREngine.timestart = System.currentTimeMillis();
+        ret = EXOCREngine.nativeRecoIDCardRawdat(data, width, height, width, 1, obtain, obtain.length);
+        EXOCREngine.timeend = System.currentTimeMillis();
 
         if (ret > 0) {
             long end = System.currentTimeMillis();
             Log.d(TAG, "Found text (" + (end - start) + " ms):\n");
-            EXOCRModel idcard = EXOCRModel.decode(ocrengine.bResultBuf, ret);
+            EXOCRModel idcard = EXOCRModel.decode(obtain, ret);
             //if we have the text to show
             //检测，确保无误。
             if (idcard != null) {
@@ -72,7 +76,7 @@ final class DecodeHandler extends Handler {
 
                 //NOTE: 下面这些代码是提取标准身份证图像的，如果客户有需求请打开
                 //API For Image Return;
-                Bitmap imcard = EXOCREngine.nativeGetIDCardStdImg(data, width, height, ocrengine.bResultBuf, ocrengine.bResultBuf.length, rects);
+                Bitmap imcard = EXOCREngine.nativeGetIDCardStdImg(data, width, height, obtain, obtain.length, rects);
                 //如果需要保存图像，请您打开保存图像的语句
                 //try{saveBitmap(imcard); }catch (IOException e) {e.printStackTrace();}
                 idcard.SetBitmap(activity.getApplicationContext(), imcard);
@@ -90,31 +94,8 @@ final class DecodeHandler extends Handler {
                 return;
             }
         }
-        // retry to focus to the text
-//		Message message = Message.obtain(activity.getHandler(), R.id.decode_failed);
         Message message = Message.obtain(activity.getHandler(), PreviewCallback.PARSE_FAIL);
         message.sendToTarget();
-    }
-
-    private void savetofile(byte[] data, int width, int height) {
-        gcount++;
-        String tofile = "/mnt/sdcard/test_" + gcount + ".raw";
-        String ssize = "size=width=" + width + "height=" + height;
-        byte bsize[] = new byte[ssize.length()];
-
-        for (int i = 0; i < ssize.length(); ++i) {
-            bsize[i] = (byte) ssize.charAt(i);
-        }
-
-        try {
-            File file = new File(tofile);
-            OutputStream fs = new FileOutputStream(file);// to为要写入sdcard中的文件名称
-            fs.write(data, 0, width * height);
-            fs.write(bsize);
-            fs.close();
-        } catch (Exception e) {
-            return;
-        }
     }
 
     private int CardColorJudge(byte[] data, int width, int height) {

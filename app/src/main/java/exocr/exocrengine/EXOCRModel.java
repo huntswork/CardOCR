@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -16,35 +17,10 @@ import java.io.UnsupportedEncodingException;
  * create by kalu on 2018/11/19 10:04
  */
 public final class EXOCRModel implements Parcelable {
-    //是否显示头像		SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_FACEIMG_ID = false;
-    //是否显示姓名	SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_NAME_ID = true;
-    //是否显示性别		SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_SEX_ID = true;
-    // 是否显示民族 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_NATION_ID = true;
-    // 是否显示出生 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_BIRTH_ID = true;
-    // 是否显示住址 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_ADDRESS_ID = true;
-    // 是否显示证件号 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_CARDNUM_ID = true;
-    // 是否显示签发机关 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_OFFICE_ID = true;
-    // 是否显示有效期限 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_VALID_ID = true;
-    // 是否显示正面全图 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_FRONTFULLIMG_ID = true;
-    // 是否显示背面全图 SHOW_RESULT_ACTIVITY置true有效
-    public static boolean SHOW_BACKFULLIMG_ID = true;
 
-    public static boolean DOUBLE_CHECK = false;
-    public final static boolean DISPLAY_LOGO = false;
-
-    public String imgtype;
+    public String imgtype = "Preview";
     //recognition data
-    public int type;
+    public int type = 0;
     public String cardnum;
     public String name;
     public String sex;
@@ -67,24 +43,7 @@ public final class EXOCRModel implements Parcelable {
     public Rect rtValid;
 
     public EXOCRModel() {
-        type = 0;
-        imgtype = "Preview";
     }
-
-    // parcelable
-    private EXOCRModel(Parcel src) {
-        type = src.readInt();
-        cardnum = src.readString();
-        birth = src.readString();
-        name = src.readString();
-        sex = src.readString();
-        address = src.readString();
-        nation = src.readString();
-        office = src.readString();
-        validdate = src.readString();
-        bitmapPath = src.readString();
-    }
-
 
     ////////////////////////////////////////////////////////////
 
@@ -92,7 +51,7 @@ public final class EXOCRModel implements Parcelable {
      * decode from stream
      * return the len of decoded data int the buf
      */
-    public static EXOCRModel decode(byte[] bResultBuf, int reslen) {
+    public static final EXOCRModel decode(byte[] bResultBuf, int reslen) {
         byte code;
         int i, j, rdcount;
         String content = null;
@@ -214,35 +173,14 @@ public final class EXOCRModel implements Parcelable {
 
             if (null != bitmap) {
                 bitmap.recycle();
-                bitmap = null;
             }
 
         } catch (IOException e) {
         }
     }
 
-//    public Bitmap GetIDNumBitmap() {
-//        if (stdCardIm == null) return null;
-//        Bitmap bmIDNum = Bitmap.createBitmap(stdCardIm, rtIDNum.left, rtIDNum.top, rtIDNum.width(), rtIDNum.height());
-//        return bmIDNum;
-//    }
-//
-//    public Bitmap GetNameBitmap() {
-//        if (stdCardIm == null) return null;
-//        Bitmap bmIDNum = Bitmap.createBitmap(stdCardIm, rtName.left, rtName.top, rtName.width(), rtName.height());
-//        return bmIDNum;
-//    }
-//
-//    public Bitmap GetFaceBitmap() {
-//        if (stdCardIm == null) return null;
-//        Bitmap bmFace = Bitmap.createBitmap(stdCardIm, rtFace.left, rtFace.top, rtFace.width(), rtFace.height());
-//        return bmFace;
-//    }
-
-    /**
-     * @return raw text to show
-     */
-    public String getText() {
+    @Override
+    public String toString() {
         String text = "\nVeiwType = " + imgtype;
         if (nColorType == 1) {
             text += "  类型:  彩色";
@@ -265,8 +203,79 @@ public final class EXOCRModel implements Parcelable {
         return text;
     }
 
-    public static final Creator<EXOCRModel> CREATOR = new Creator<EXOCRModel>() {
+    /**********************************************************************************************/
 
+    /**
+     * 是否解析成功
+     *
+     * @return
+     */
+    public final boolean isDecodeSucc() {
+        return type == 1 || type == 2;
+    }
+
+    /**
+     * 是否正面, 人像
+     *
+     * @return
+     */
+    public final boolean isDecodeFront() {
+        return type == 1;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.imgtype);
+        dest.writeInt(this.type);
+        dest.writeString(this.cardnum);
+        dest.writeString(this.name);
+        dest.writeString(this.sex);
+        dest.writeString(this.address);
+        dest.writeString(this.nation);
+        dest.writeString(this.birth);
+        dest.writeString(this.office);
+        dest.writeString(this.validdate);
+        dest.writeInt(this.nColorType);
+        dest.writeString(this.bitmapPath);
+        dest.writeParcelable(this.rtIDNum, flags);
+        dest.writeParcelable(this.rtName, flags);
+        dest.writeParcelable(this.rtSex, flags);
+        dest.writeParcelable(this.rtNation, flags);
+        dest.writeParcelable(this.rtAddress, flags);
+        dest.writeParcelable(this.rtFace, flags);
+        dest.writeParcelable(this.rtOffice, flags);
+        dest.writeParcelable(this.rtValid, flags);
+    }
+
+    protected EXOCRModel(Parcel in) {
+        this.imgtype = in.readString();
+        this.type = in.readInt();
+        this.cardnum = in.readString();
+        this.name = in.readString();
+        this.sex = in.readString();
+        this.address = in.readString();
+        this.nation = in.readString();
+        this.birth = in.readString();
+        this.office = in.readString();
+        this.validdate = in.readString();
+        this.nColorType = in.readInt();
+        this.bitmapPath = in.readString();
+        this.rtIDNum = in.readParcelable(Rect.class.getClassLoader());
+        this.rtName = in.readParcelable(Rect.class.getClassLoader());
+        this.rtSex = in.readParcelable(Rect.class.getClassLoader());
+        this.rtNation = in.readParcelable(Rect.class.getClassLoader());
+        this.rtAddress = in.readParcelable(Rect.class.getClassLoader());
+        this.rtFace = in.readParcelable(Rect.class.getClassLoader());
+        this.rtOffice = in.readParcelable(Rect.class.getClassLoader());
+        this.rtValid = in.readParcelable(Rect.class.getClassLoader());
+    }
+
+    public static final Creator<EXOCRModel> CREATOR = new Creator<EXOCRModel>() {
         @Override
         public EXOCRModel createFromParcel(Parcel source) {
             return new EXOCRModel(source);
@@ -277,32 +286,4 @@ public final class EXOCRModel implements Parcelable {
             return new EXOCRModel[size];
         }
     };
-
-
-    @Override
-    public int describeContents() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel arg0, int arg1) {
-        // TODO Auto-generated method stub
-        arg0.writeInt(type);
-        arg0.writeString(cardnum);
-        arg0.writeString(birth);
-        arg0.writeString(name);
-        arg0.writeString(sex);
-        arg0.writeString(address);
-        arg0.writeString(nation);
-        arg0.writeString(office);
-        arg0.writeString(validdate);
-        arg0.writeString(bitmapPath);
-    }
-
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return name + "\t" + sex + "\t" + nation + "\t" + birth + "\n" + address + "\t" + cardnum + "\n" + office + "\t" + validdate;
-    }
 }

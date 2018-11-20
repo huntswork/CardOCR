@@ -55,39 +55,24 @@ public final class CaptureHandler extends Handler {
     @Override
     public void handleMessage(Message message) {
         if (message.what == auto_focus_id) {
-            // if (message.what == R.id.auto_focus) {
-            // Log.d(TAG, "Got auto-focus message");
-            // When one auto focus pass finishes, start another. This is the
-            // closest thing to
-            // continuous AF. It does seem to hunt a bit, but I'm not sure what
-            // else to do.
             if (state == State.PREVIEW) {
                 CameraManager.get().requestAutoFocus(this, auto_focus_id);
             }
         } else if (message.what == restart_preview_id) {
-//		} else if (message.what == R.id.restart_preview) {
             Log.d(TAG, "Got restart preview message");
             restartPreviewAndDecode();
         } else if (message.what == PreviewCallback.PARSE_SUCC) {
-//		} else if (message.what == R.id.decode_succeeded) {
             Log.d(TAG, "Got decode succeeded message");
             state = State.SUCCESS;
-            // pass the result to the view to show
             activity.handleDecode((EXOCRModel) message.obj);
         } else if (message.what == PreviewCallback.PARSE_FAIL) {
-//		} else if (message.what == R.id.decode_failed) {
-            // We're decoding as fast as possible, so when one decode fails,
-            // start another.
-            // activity.handleDecode(null);
             state = State.PREVIEW;
             CameraManager.get().requestPreviewFrame(decodeThread.getHandler(), PreviewCallback.PARSE_DECODE);
         } else if (message.what == return_scan_result_id) {
-//		} else if (message.what == R.id.return_scan_result) {
             Log.d(TAG, "Got return scan result message");
             activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
             activity.finish();
         } else if (message.what == launch_product_query_id) {
-//		} else if (message.what == R.id.launch_product_query) {
             Log.d(TAG, "Got product query message");
             String url = (String) message.obj;
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

@@ -6,7 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-final class PreviewCallback implements Camera.PreviewCallback {
+/**
+ * description: 预览回调
+ * create by kalu on 2018/11/20 9:51
+ */
+public final class PreviewCallback implements Camera.PreviewCallback {
 
     public static final int PARSE_DECODE = 1001;
     public static final int PARSE_SUCC = 1002;
@@ -16,31 +20,32 @@ final class PreviewCallback implements Camera.PreviewCallback {
 
     private final CameraConfigurationManager configManager;
     private final boolean useOneShotPreviewCallback;
-    private Handler previewHandler;
-    private int previewMessage;
+    private Handler handler;
+    private int what;
 
     PreviewCallback(CameraConfigurationManager configManager, boolean useOneShotPreviewCallback) {
         this.configManager = configManager;
         this.useOneShotPreviewCallback = useOneShotPreviewCallback;
     }
 
-    void setHandler(Handler previewHandler, int previewMessage) {
-        this.previewHandler = previewHandler;
-        this.previewMessage = previewMessage;
+    final void setHandler(DecodeHandler handler, int what) {
+        this.handler = handler;
+        this.what = what;
     }
 
+    @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
+
         Point cameraResolution = configManager.getCameraResolution();
         if (!useOneShotPreviewCallback) {
             camera.setPreviewCallback(null);
         }
-        if (previewHandler != null) {
-            Message message = previewHandler.obtainMessage(previewMessage, cameraResolution.x, cameraResolution.y, data);
+        if (handler != null) {
+            Message message = handler.obtainMessage(what, cameraResolution.x, cameraResolution.y, data);
             message.sendToTarget();
-            previewHandler = null;
+            handler = null;
         } else {
             Log.d(TAG, "Got preview callback, but no handler for it");
         }
     }
-
 }

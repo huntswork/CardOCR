@@ -92,12 +92,6 @@ final class CameraConfigurationManager {
  		return screenResolution;
  	}
   
-  /**
-   * Sets the camera up to take preview images which are used for both preview and decoding.
-   * We detect the preview format here so that buildLuminanceSource() can build an appropriate
-   * LuminanceSource subclass. In the future we may want to force YUV420SP as it's the smallest,
-   * and the planar Y can be used for barcode scanning without a copy in some cases.
-   */
   void setDesiredCameraParameters(Camera camera) {
     Camera.Parameters parameters = camera.getParameters();
     
@@ -116,7 +110,6 @@ final class CameraConfigurationManager {
     ///Size sz = parameters.getPreviewSize();
     ///cameraResolution.x = sz.width;
     ///cameraResolution.y = sz.height;
-    
   }
 
   Point getCameraResolution() {

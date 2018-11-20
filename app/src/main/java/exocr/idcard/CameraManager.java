@@ -51,22 +51,12 @@ public final class CameraManager {
     private final AutoFocusCallback autoFocusCallback;
     private final PictureCallback pictureCallback;
 
-    /**
-     * Initializes this static object with the Context of the calling Activity.
-     *
-     * @param context The Activity which wants to use the camera.
-     */
     public static void init(Context context) {
         if (cameraManager == null) {
             cameraManager = new CameraManager(context);
         }
     }
 
-    /**
-     * Gets the CameraManager singleton instance.
-     *
-     * @return A reference to the CameraManager singleton.
-     */
     public static CameraManager get() {
         return cameraManager;
     }
@@ -75,9 +65,9 @@ public final class CameraManager {
 
         this.configManager = new CameraConfigurationManager(context);
         useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) > 3; // 3 = Cupcake
+
         previewCallback = new PreviewCallback(configManager, useOneShotPreviewCallback);
         autoFocusCallback = new AutoFocusCallback();
-
         pictureCallback = new PictureCallback();
     }
 
@@ -102,11 +92,6 @@ public final class CameraManager {
      */
     public void closeDriver() {
         if (camera != null) {
-            // FlashlightManager.disableFlashlight();
-
-            //Parameters p = camera.getParameters();
-            //p.setFlashMode(Parameters.FLASH_MODE_OFF);
-            //camera.setParameters(p);
             camera.release();
             camera = null;
         }
@@ -155,7 +140,7 @@ public final class CameraManager {
         }
     }
 
-    public final void requestPreviewFrame(Handler handler, int message) {
+    public final void requestPreviewFrame(DecodeHandler handler, int message) {
         if (camera != null && previewing) {
             previewCallback.setHandler(handler, message);
             if (useOneShotPreviewCallback) {

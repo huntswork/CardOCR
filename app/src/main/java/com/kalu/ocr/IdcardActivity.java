@@ -49,11 +49,11 @@ public final class IdcardActivity extends OcrActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.e("kalu", "requestCode = " + requestCode + ", resultCode = " + resultCode);
 
-        if (requestCode == REQUEST_CODE_FRONT && resultCode == 10 && null != data) {
+        if (requestCode == REQUEST_CODE_FRONT && resultCode == CaptureActivity.RESULT_CODE && null != data) {
 
             final Bundle extras = data.getExtras();
             final EXOCRModel result = extras.getParcelable(CaptureActivity.EXTRA_SCAN_RESULT);
-            Log.e("kalu", "result = " + result.getText());
+            Log.e("kalu", "result = " + result.toString());
 
             final TextView name = findViewById(R.id.card_name);
             name.setText(result.name);
@@ -76,11 +76,11 @@ public final class IdcardActivity extends OcrActivity {
             final ImageView self = findViewById(R.id.card_self);
             self.setImageBitmap(BitmapFactory.decodeFile(result.bitmapPath));
 
-        } else if (requestCode == REQUEST_CODE_BACK && resultCode == 10 && null != data) {
+        } else if (requestCode == REQUEST_CODE_BACK && resultCode == CaptureActivity.RESULT_CODE && null != data) {
 
             final Bundle extras = data.getExtras();
             final EXOCRModel result = extras.getParcelable(CaptureActivity.EXTRA_SCAN_RESULT);
-            Log.e("kalu", "result = " + result.getText());
+            Log.e("kalu", "result = " + result.toString());
 
             final TextView office = findViewById(R.id.card_office);
             office.setText(result.office);

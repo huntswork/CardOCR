@@ -1,4 +1,4 @@
-package exocr.idcard;
+package exocr.exocrengine;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -13,11 +13,13 @@ import com.kalu.ocr.CaptureActivity;
 
 import java.io.FileNotFoundException;
 
-import exocr.exocrengine.EXOCRModel;
-import exocr.exocrengine.EXOCREngine;
+/**
+ * description: 解析本地图片, bitmap
+ * create by kalu on 2018/11/19 13:11
+ */
+public final class EXOCRBitmap {
 
-public class IDPhoto {
-    private static final String TAG = IDPhoto.class.getSimpleName();
+    private static final String TAG = EXOCRBitmap.class.getSimpleName();
     private CaptureActivity mActivity;
     private EXOCRModel mCardInfo;
     static Bitmap markedCardImage = null;
@@ -29,7 +31,7 @@ public class IDPhoto {
     /**
      * Construction
      */
-    public IDPhoto(CaptureActivity activity) {
+    public EXOCRBitmap(CaptureActivity activity) {
         mActivity = activity;
     }
 

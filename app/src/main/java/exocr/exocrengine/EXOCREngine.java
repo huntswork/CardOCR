@@ -3,25 +3,31 @@ package exocr.exocrengine;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-
+/**
+ * description: jni
+ * create by kalu on 2018/11/20 10:24
+ */
 public final class EXOCREngine {
-    public static final int mMaxStreamBuf = 4096;
+
+    private EXOCREngine() {
+    }
 
     static {
         System.loadLibrary("exocrenginec");
     }
 
     //time
-    public long timestart;
-    public long timeend;
-    //Results
-    public byte[] bResultBuf;
-    public int nResultLen;
+    public static long timestart = 0;
+    public static long timeend = 0;
 
-    ////////////////////////////////////////////////////////////
-    public EXOCREngine() {
-        bResultBuf = new byte[mMaxStreamBuf];
-        nResultLen = 0;
+    private static byte[] bResultBuf;
+
+    public static final byte[] obtain() {
+        if (null == bResultBuf) {
+            bResultBuf = null;
+        }
+        bResultBuf = new byte[4096];
+        return bResultBuf;
     }
 
     //natives/////////////////////////////////////////////////////
@@ -62,12 +68,9 @@ public final class EXOCREngine {
 
     public static native Bitmap nativeRecoVE2CardStillImage(Bitmap bitmap, int tryhard, int bwantimg, byte[] bresult, int maxsize, int[] rects, int[] rets);
 
-    /////////////////////////////////////////////////////////////
     //Scan Line Recogition
-    public static native int nativeRecoScanLineRawdata(byte[] imgdata, int width, int height, int imgfmt,
-                                                       int lft, int rgt, int top, int btm, int nRecoType, byte[] bresult, int maxsize);
+    public static native int nativeRecoScanLineRawdata(byte[] imgdata, int width, int height, int imgfmt, int lft, int rgt, int top, int btm, int nRecoType, byte[] bresult, int maxsize);
 
-    /////////////////////////////////////////////////////////////
     //DriveLisenseRecognition
     public static native Bitmap nativeRecoDRCardNV21(byte[] imgnv21, int width, int height, int bwantimg, byte[] bresult, int maxsize, int[] rects, int[] rets);
 
