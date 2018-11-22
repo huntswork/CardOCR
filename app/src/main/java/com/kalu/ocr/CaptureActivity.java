@@ -41,7 +41,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private static final String TAG = CaptureActivity.class.getSimpleName();
     private CaptureHandler handler;
     private boolean hasSurface;
-    private boolean bLight;
 
     public static final int PHOTO_ID = 0x1025;
     private boolean bPhotoReco;
@@ -95,7 +94,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             } else {
                 Log.d(TAG, "反面");
             }
-            bLight = false;
         }
     }
 
@@ -192,16 +190,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     public ShutterCallback getShutterCallback() {
         return shutterCallback;
-    }
-
-    public void OnFlashBtnClick(View view) {
-        if (bLight) {
-            CameraManager.get().disableFlashlight();
-            bLight = false;
-        } else {
-            CameraManager.get().enableFlashlight();
-            bLight = true;
-        }
     }
 
     /**********************************************************************************************/

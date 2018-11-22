@@ -121,6 +121,23 @@ public final class CameraManager {
         }
     }
 
+    public void switchFlashlight() {
+        if (camera != null) {
+            try {
+                Parameters p = camera.getParameters();
+                String s = p.get("flash-mode");
+                if ("off".equals(s)) {
+                    p.setFlashMode(Parameters.FLASH_MODE_TORCH);
+                } else {
+                    p.setFlashMode(Parameters.FLASH_MODE_OFF);
+                }
+                camera.setParameters(p);
+            } catch (RuntimeException e) {
+                Log.w(TAG, "Could not set flash mode: " + e);
+            }
+        }
+    }
+
     public final void startPreview() {
         if (camera != null && !previewing) {
             camera.startPreview();

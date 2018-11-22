@@ -16,38 +16,4 @@
         android:layout_height="match_parent"
         android:background="@color/transparent" />
 
-    <TextView
-        android:id="@+id/txtResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:padding="20dp"
-        android:textColor="#FFFFFFFF"
-        android:textSize="18sp" />
-
-    <ImageView
-        android:id="@+id/FaceImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:padding="20dp" />
-
-    <Button
-        android:id="@+id/photoBtnID"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center_vertical|left"
-        android:onClick="onPhotoBtnClickID"
-        android:text="闪光灯"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/imFlash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:onClick="OnFlashBtnClick"
-        android:text="闪光"
-        android:visibility="gone" />
-
 </FrameLayout>

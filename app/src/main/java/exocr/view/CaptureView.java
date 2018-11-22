@@ -13,6 +13,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+/**
+ * description: 扫描框
+ * create by kalu on 2018/11/20 13:28
+ */
 public final class CaptureView extends View {
 
     private boolean isFront = true;
@@ -75,9 +79,11 @@ public final class CaptureView extends View {
             mPaint.setAlpha(laserAlpha[laserAlphaIndex]);
 //            mPaint.setPathEffect(mDashPathEffect);
             laserAlphaIndex = (laserAlphaIndex + 1) % laserAlpha.length;
-            final int left = (int) (layerLeft + stroke / 2);
+
+            float temp = canvasWidth / 7;
+            final int left = (int) (temp * 3 + stroke / 2);
             final int top = (int) (canvasHeight / 2 - stroke / 2);
-            final int right = (int) (layerRight - stroke / 2);
+            final int right = (int) (temp * 4 - stroke / 2);
             final int bottom = (int) (canvasHeight / 2 + stroke / 2);
 //            LinearGradient backGradient = new LinearGradient(left, right, top, bottom, new int[]{0x66FF0000, 0xFFFF0000, 0x66FF0000}, null, Shader.TileMode.MIRROR);
 //            mPaint.setShader(backGradient);
@@ -113,9 +119,11 @@ public final class CaptureView extends View {
             mPaint.setAlpha(laserAlpha[laserAlphaIndex]);
 //            mPaint.setPathEffect(mDashPathEffect);
             laserAlphaIndex = (laserAlphaIndex + 1) % laserAlpha.length;
-            final int left = (int) (layerLeft + stroke / 2);
+
+            float temp = canvasWidth / 7;
+            final int left = (int) (temp * 3 + stroke / 2);
             final int top = (int) (canvasHeight / 2 - stroke / 2);
-            final int right = (int) (layerRight - stroke / 2);
+            final int right = (int) (temp * 4 - stroke / 2);
             final int bottom = (int) (canvasHeight / 2 + stroke / 2);
             //            LinearGradient backGradient = new LinearGradient(left, right, top, bottom, new int[]{0x66FF0000, 0xFFFF0000, 0x66FF0000}, null, Shader.TileMode.MIRROR);
 //            mPaint.setShader(backGradient);
