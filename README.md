@@ -1,7 +1,8 @@
 ##
 #### 字典
 ```
-https://github.com/zhongfenglee/IDCardRecognition/tree/master/IDCardRecognition/libexidcard
+https://github.com/unseim/WYIDCardOCR/tree/master_01/WYIDCardOCR/WYIDCardOCR/WYIDCardOCR/bank_io
+https://github.com/unseim/WYIDCardOCR/tree/master_01/WYIDCardOCR/WYIDCardOCR/WYIDCardOCR/libexidcard
 ```
 
 ##
