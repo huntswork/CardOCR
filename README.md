@@ -10,7 +10,7 @@ https://github.com/BrooksWon/ocr_savingCard
 ![image](https://github.com/153437803/Ocr_IDCard/blob/master/ScreenRecord_20181116181153.gif )
 
 ##
-#### Todo
+#### TODO
 ```
 银行卡识别
 ```
