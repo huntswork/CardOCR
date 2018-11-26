@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/IDCardScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <Button
+            android:id="@+id/card_front"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="#cccccc"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="拍照"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/card_front"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|right"
+            android:paddingRight="10dp"
+            android:text="银行名称"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/card_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_front"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|left"
+            android:minHeight="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/card_sex"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|right"
+            android:paddingRight="10dp"
+            android:text="卡片类型"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/card_nation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_sex"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|left"
+            android:minHeight="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/card_nation"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|right"
+            android:paddingRight="10dp"
+            android:text="有效日期"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/card_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_nation"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|left"
+            android:minHeight="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/card_name"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|right"
+            android:paddingRight="10dp"
+            android:text="卡片名称"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/card_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_name"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:gravity="center_vertical|left"
+            android:minHeight="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/card_self"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/card_birth"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc"
+            android:minHeight="40dp"
+            android:scaleType="fitXY" />
+
+    </RelativeLayout>
+
+</ScrollView>

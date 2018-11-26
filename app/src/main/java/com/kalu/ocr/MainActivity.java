@@ -20,5 +20,13 @@ public final class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.bankcard).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BankActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

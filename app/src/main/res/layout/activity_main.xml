@@ -9,10 +9,19 @@
     <Button
         android:id="@+id/idcard"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_margin="10dp"
         android:background="#cccccc"
         android:text="身份证识别"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/bankcard"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#cccccc"
+        android:text="银行卡识别"
         android:textColor="#000000" />
 
 </LinearLayout>

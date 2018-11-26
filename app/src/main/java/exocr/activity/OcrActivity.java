@@ -6,19 +6,25 @@ public class OcrActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        listener.onFinish();
+        if(null != listener){
+            listener.onFinish();
+        }
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-        listener.onFinish();
+        if(null != listener){
+            listener.onFinish();
+        }
         super.onDestroy();
     }
 
     @Override
     public void finish() {
-        listener.onFinish();
+        if(null != listener){
+            listener.onFinish();
+        }
         super.finish();
     }
 
