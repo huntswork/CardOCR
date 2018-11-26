@@ -13,4 +13,5 @@ https://github.com/BrooksWon/ocr_savingCard
 #### TODO
 ```
 银行卡识别
+银行卡信息识别（银行名称+卡片类型+有效日期）
 ```
