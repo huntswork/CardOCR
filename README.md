@@ -1,7 +1,7 @@
 ##
-#### 字典
+#### 识别字典
 ```
-https://github.com/zhongfenglee/IDCardRecognition/tree/master/IDCardRecognition/libexidcard
+https://github.com/BrooksWon/ocr_savingCard
 ```
 
 ##
@@ -10,7 +10,7 @@ https://github.com/zhongfenglee/IDCardRecognition/tree/master/IDCardRecognition/
 ![image](https://github.com/153437803/Ocr_IDCard/blob/master/ScreenRecord_20181116181153.gif )
 
 ##
-#### Todo
+#### TODO
 ```
 银行卡识别
 ```
