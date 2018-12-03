@@ -1,19 +1,19 @@
 /************************************************************************/
 /* copyright                                                            */
-/* version 1.1    ÐÞ¸ÄTPoint  TRect µÄÊý¾ÝÀàÐÍÎªint                     */
+/* version 1.1    ä¿®æ”¹TPoint  TRect çš„æ•°æ®ç±»åž‹ä¸ºint                     */
 /************************************************************************/
 #ifndef __COMMON_DEF_H__
 #define __COMMON_DEF_H__
 
 //////////////////////////////////////////////////////////////////////////
-/* Æ½Ì¨Ïà¹ØµÄÒ»Ð©¶¨Òå */
-/** µ÷ÓÃ·½Ê½Ô¼¶¨ */
+/* å¹³å°ç›¸å…³çš„ä¸€äº›å®šä¹‰ */
+/** è°ƒç”¨æ–¹å¼çº¦å®š */
 #if (defined WIN32 || defined WIN64)
 //-----------windows-----------------------------
-    #define STD_CDECL   __cdecl         //Cµ÷ÓÃÔ¼¶¨
-    #define STD_STDCALL __stdcall       //pascallµ÷ÓÃÔ¼¶¨
+    #define STD_CDECL   __cdecl         //Cè°ƒç”¨çº¦å®š
+    #define STD_STDCALL __stdcall       //pascallè°ƒç”¨çº¦å®š
     #define STD_EXPORTS __declspec(dllexport)
-    #define STD_WINAPI  __stdcall 
+    #define STD_WINAPI  __stdcall
 #else
 //-----------linux-------------------------------
     #define STD_CDECL
@@ -21,7 +21,7 @@
     #define STD_EXPORTS __attribute__ ((visibility("default")))
 #endif
 
-/* µ¼³ö·½Ê½¶¨Òå */
+/* å¯¼å‡ºæ–¹å¼å®šä¹‰ */
 #ifndef STD_EXTERN_C
     #ifdef __cplusplus
         #define STD_EXTERN_C  extern "C"
@@ -30,20 +30,20 @@
     #endif
 #endif
 
-/* ½Ó¿Ú¶¨Òå:²ÉÓÃ±ê×¼µÄCµ÷ÓÃÔ¼¶¨ */
+/* æŽ¥å£å®šä¹‰:é‡‡ç”¨æ ‡å‡†çš„Cè°ƒç”¨çº¦å®š */
 #ifndef STD_API
     #define STD_API(rettype) STD_EXTERN_C STD_EXPORTS rettype STD_CDECL
-	/* ½Ó¿ÚÊµÏÖ:²ÉÓÃ±ê×¼µÄCµ÷ÓÃÔ¼¶¨ */
+	/* æŽ¥å£å®žçŽ°:é‡‡ç”¨æ ‡å‡†çš„Cè°ƒç”¨çº¦å®š */
 	#define STD_IMPL STD_EXTERN_C STD_EXPORTS
 #endif
-/* C++½Ó¿Ú¶¨Òå */
+/* C++æŽ¥å£å®šä¹‰ */
 #ifndef CPP_API
 	#define CPP_API(rettype) STD_EXPORTS rettype STD_CDECL
 	#define CPP_IMPL STD_EXPORTS
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-//³£ÓÃ¶¨Òåºê
+//å¸¸ç”¨å®šä¹‰å®
 /* MIN, MAX, ABS */
 #define ZMIN(a, b)	((a)>(b) ? (b) : (a))
 #define ZMAX(a, b)	((a)<(b) ? (b) : (a))
@@ -59,14 +59,14 @@
 #define CEIL(a)  ( ROUND(a) + ((ROUND(a) - a) < 0 ) )
 
 //////////////////////////////////////////////////////////////////////////
-//64Î»´óÊý£¬ÓÉÓÚÏÂÃælong±»ÖØ¶¨ÒåÁË£¬ËùÒÔÕâ¸öÒªÌáÇ°
+//64ä½å¤§æ•°ï¼Œç”±äºŽä¸‹é¢longè¢«é‡å®šä¹‰äº†ï¼Œæ‰€ä»¥è¿™ä¸ªè¦æå‰
 #if (defined WIN32 || defined WIN64)
 typedef __int64			TInt64;
 #else
 typedef long long		TInt64;
 #endif
 
-//ÓÉÓÚlongµÄ³¤¶ÈÓÐ32Î»ºÃ64Î»µÄÎÊÌâ£¬Í³Ò»ÓÃintÀ´´¦Àí£¬Ê¶±ðÄÚºËÃ»ÓÐÎÊÌâ
+//ç”±äºŽlongçš„é•¿åº¦æœ‰32ä½å¥½64ä½çš„é—®é¢˜ï¼Œç»Ÿä¸€ç”¨intæ¥å¤„ç†ï¼Œè¯†åˆ«å†…æ ¸æ²¡æœ‰é—®é¢˜
 //#define long int
 //////////////////////////////////////////////////////////////////////////
 /**common data types, when we write code, we must use this data type to make our code partable
@@ -75,14 +75,14 @@ typedef signed char	    TInt8;
 typedef signed short	TInt16;
 typedef signed int	    TInt32;
 typedef signed int	    TInt;
-typedef signed long     TLong;      //³¤¶Èx32£¬4byte£¬x64ÊÇ8byte
+typedef signed long     TLong;      //é•¿åº¦x32ï¼Œ4byteï¼Œx64æ˜¯8byte
 typedef unsigned char	TUint8;
 typedef unsigned short	TUint16;
 typedef unsigned int	TUint32;
 typedef unsigned int	TUint;      //DWORD
 typedef unsigned char   TUchar;     //BYTE
 typedef unsigned short  TUshort;    //WORD
-typedef unsigned long   TUlong;     //³¤¶Èx32£¬4byte£¬x64ÊÇ8byte
+typedef unsigned long   TUlong;     //é•¿åº¦x32ï¼Œ4byteï¼Œx64æ˜¯8byte
 typedef float		    TReal32;
 typedef double		    TReal64;
 typedef int		        TBool;
@@ -93,25 +93,25 @@ typedef int				TSTATUS;
 typedef void*			THandle;
 
 //////////////////////////////////////////////////////////////////////////
-/* µã */
+/* ç‚¹ */
 typedef struct TPoint_
 {
 	int x;
 	int y;
 }TPoint;
 
-/* ¾ØÐÎ(°üº¬¹ØÏµ) */
+/* çŸ©å½¢(åŒ…å«å…³ç³») */
 typedef struct TRect_
 {
-	int nLft; 
+	int nLft;
 	int nRgt;
 	int nTop;
 	int nBtm;
 }TRect;
 
 //////////////////////////////////////////////////////////////////////////
-//Êý¾ÝÀàÐÍ×î´óÖµºÍ×îÐ¡Öµ
-#define TINT8_MIN  (-128) 
+//æ•°æ®ç±»åž‹æœ€å¤§å€¼å’Œæœ€å°å€¼
+#define TINT8_MIN  (-128)
 #define TINT16_MIN (-32768)
 #define TINT32_MIN (-2147483647 - 1)
 #define TINT64_MIN (-9223372036854775807LL - 1)
@@ -127,45 +127,45 @@ typedef struct TRect_
 #define TUINT64_MAX 0xffffffffffffffffULL /* 18446744073709551615ULL */
 
 //////////////////////////////////////////////////////////////////////////
-//´íÎóÀàÐÍ ´íÎó±àÂë <0 ·¢Éú´íÎó ·ñÔòÕýÈ·£¬32Î»µÄ´íÎó±àÂë
-/** ÅÐ¶ÏÓï¾ä */
+//é”™è¯¯ç±»åž‹ é”™è¯¯ç¼–ç  <0 å‘ç”Ÿé”™è¯¯ å¦åˆ™æ­£ç¡®ï¼Œ32ä½çš„é”™è¯¯ç¼–ç 
+/** åˆ¤æ–­è¯­å¥ */
 #define ISFAILED(iStatus)	 ((iStatus) <  0 )
 #define ISSUCCEEDED(iStatus) ((iStatus) >= 0 )
 
-/** Ã»ÓÐ´íÎó */
+/** æ²¡æœ‰é”™è¯¯ */
 #define STATUS_OK                   (0     )
-/** ÄÚ´æ²»×ã */
+/** å†…å­˜ä¸è¶³ */
 #define STATUS_NOMEMORY             (-80001)
-/** ÊäÈë²ÎÊý²»¶Ô */
+/** è¾“å…¥å‚æ•°ä¸å¯¹ */
 #define STATUS_INVALIDARG           (-80002)
-/** ÎÞ´Ë½Ó¿Ú */
+/** æ— æ­¤æŽ¥å£ */
 #define STATUS_NOINTERFACE          (-80003)
-/** ÎÞÐ§Ö¸Õë */
+/** æ— æ•ˆæŒ‡é’ˆ */
 #define STATUS_INVALIDPTR           (-80004)
-/* ÎÄ¼þ´íÎó */
+/* æ–‡ä»¶é”™è¯¯ */
 #define STATUS_FILEERROR            (-80005)
-/** Ê¶±ð×ÖµäÃ»ÓÐ³õÊ¼»¯ */
+/** è¯†åˆ«å­—å…¸æ²¡æœ‰åˆå§‹åŒ– */
 #define STATUS_DICT_UNINIT			(-80006)
-/** Ê¶±ð×Öµä´íÎó */
+/** è¯†åˆ«å­—å…¸é”™è¯¯ */
 #define STATUS_RECG_ERROR			(-80007)
-/** ×Öµä³õÊ¼»¯´íÎó */
+/** å­—å…¸åˆå§‹åŒ–é”™è¯¯ */
 #define STATUS_DICT_ERROR			(-80008)
-/** Ö¸ÕëÎª¿Õ */
+/** æŒ‡é’ˆä¸ºç©º */
 #define STATUS_NULLPTR				(-80009)
-/** not supported image formate    */      
+/** not supported image formate    */
 #define	STATUS_UNKNOWFMT			(-80010)
-/** Í¼Ïñ´íÎó */
+/** å›¾åƒé”™è¯¯ */
 #define STATUS_BADIMAGE				(-80011)
-/** Ìí¼ÓÆäËû´íÎó ........................ */
-/** ¶¨Î»´íÎó */
+/** æ·»åŠ å…¶ä»–é”™è¯¯ ........................ */
+/** å®šä½é”™è¯¯ */
 #define STATUS_DETECTERR			(-80020)
-/** ½âÂë´íÎó */
+/** è§£ç é”™è¯¯ */
 #define STATUS_DECODEERR			(-80021)
-/** ±àÂë´íÎó */
+/** ç¼–ç é”™è¯¯ */
 #define STATUS_ENCODEERR			(-80022)
-/** ¿â¹ýÆÚÁË*/
+/** åº“è¿‡æœŸäº†*/
 #define STATUS_OVERTIME				(-80023)
-/**ÆäËû´íÎó */
+/**å…¶ä»–é”™è¯¯ */
 #define STATUS_UNEXPECTED			(-88888)
 
 //////////////////////////////////////////////////////////////////////////
