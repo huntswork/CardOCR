@@ -48,10 +48,10 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name="exocr.bankcard.CardRecoActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name="exocr.bankcard.CardRecoActivity"-->
+            <!--android:configChanges="orientation"-->
+            <!--android:screenOrientation="portrait" />-->
 
     </application>
 
