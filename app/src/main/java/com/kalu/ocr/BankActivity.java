@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import exocr.activity.OcrActivity;
+import exocr.bankcard.CardRecoActivity;
 import exocr.exocrengine.EXOCRDict;
 import exocr.exocrengine.EXOCRModel;
 
@@ -25,14 +26,13 @@ public final class BankActivity extends OcrActivity {
 //        boolean succ = EXOCRDict.InitDict(this);
 //        if (!succ) return;
 //
-//        findViewById(R.id.card_front).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent scanIntent = new Intent(getApplicationContext(), CaptureActivity.class);
-//                scanIntent.putExtra(CaptureActivity.INTNET_FRONT, true);
-//                startActivityForResult(scanIntent, REQUEST_CODE_FRONT);
-//            }
-//        });
+        findViewById(R.id.bank_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent scanIntent = new Intent(getApplicationContext(), CardRecoActivity.class);
+                startActivityForResult(scanIntent, REQUEST_CODE_FRONT);
+            }
+        });
 //
 //        findViewById(R.id.card_back).setOnClickListener(new View.OnClickListener() {
 //            @Override

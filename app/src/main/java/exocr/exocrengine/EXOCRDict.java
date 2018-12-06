@@ -72,7 +72,7 @@ public final class EXOCRDict {
     public static final boolean InitDict(final OcrActivity activity) {
 
         final String name = "/zocr0.lib";
-        final String path = activity.getFilesDir().getAbsolutePath();
+        final String path = activity.getCacheDir().getAbsolutePath();
         final String pathname = path + name;
 
         // step1: 检测字典是否存在
