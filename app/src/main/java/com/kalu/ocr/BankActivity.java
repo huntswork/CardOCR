@@ -26,13 +26,13 @@ public final class BankActivity extends OcrActivity {
 //        boolean succ = EXOCRDict.InitDict(this);
 //        if (!succ) return;
 //
-        findViewById(R.id.bank_camera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent scanIntent = new Intent(getApplicationContext(), CardRecoActivity.class);
-                startActivityForResult(scanIntent, REQUEST_CODE_FRONT);
-            }
-        });
+//        findViewById(R.id.bank_camera).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent scanIntent = new Intent(getApplicationContext(), CardRecoActivity.class);
+//                startActivityForResult(scanIntent, REQUEST_CODE_FRONT);
+//            }
+//        });
 //
 //        findViewById(R.id.card_back).setOnClickListener(new View.OnClickListener() {
 //            @Override
